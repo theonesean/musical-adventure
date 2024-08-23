@@ -12,11 +12,10 @@
             const character = event.key;
             const data = { text: character };
 
-            fetch('https://5e81-207-251-80-10.ngrok-free.app/conductor/receive', {
+            fetch('https://goldfish-app-92sco.ondigitalocean.app/conductor/receive', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': '69420'
                 },
                 body: JSON.stringify(data)
             })

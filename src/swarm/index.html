@@ -17,7 +17,7 @@
         }
         const clientIdElement = document.getElementById('client-id');
         const clientId = getRandomInt();
-        const socket = new WebSocket(`wss://5e81-207-251-80-10.ngrok-free.app/swarm/ws/${clientId}`);
+        const socket = new WebSocket(`wss://goldfish-app-92sco.ondigitalocean.app/swarm/ws/${clientId}`);
         clientIdElement.textContent = clientId;
 
         socket.addEventListener('message', function(event) {
