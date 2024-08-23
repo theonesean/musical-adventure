@@ -7,14 +7,15 @@
 </head>
 <body>
     <h1>WebSocket Data</h1>
+    <p>Received data:</p>
+    <div id="data"></div>
     <script>
         const socket = new WebSocket('wss://2f80-207-251-80-10.ngrok-free.app/swarm/ws/1');
 
         socket.addEventListener('message', function(event) {
             const data = event.data;
-            const p = document.createElement('p');
-            p.textContent = data;
-            document.body.appendChild(p);
+            const dataElement = document.getElementById('data');
+            dataElement.textContent += data;
         });
 
         socket.addEventListener('open', function() {
