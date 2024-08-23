@@ -1,5 +1,7 @@
 FROM python:3.12.4-slim-bullseye
 
+RUN mkdir /app
+COPY . ./app
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
