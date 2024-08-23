@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>WebSocket Data</h1>
+    <p>Connecting to WebSocket as client ID <span id="client-id"></span></p>
     <p>Received data:</p>
     <div id="data"></div>
     <script>
@@ -14,7 +15,10 @@
         function getRandomInt() {
             return Math.floor(Math.random() * 101);
         }
-        const socket = new WebSocket(`wss://2f80-207-251-80-10.ngrok-free.app/swarm/ws/${getRandomInt()}`);
+        const clientIdElement = document.getElementById('client-id');
+        const clientId = getRandomInt();
+        const socket = new WebSocket(`wss://2f80-207-251-80-10.ngrok-free.app/swarm/ws/${clientId}`);
+        clientIdElement.textContent = clientId;
 
         socket.addEventListener('message', function(event) {
             const data = event.data;
