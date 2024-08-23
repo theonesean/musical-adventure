@@ -10,7 +10,11 @@
     <p>Received data:</p>
     <div id="data"></div>
     <script>
-        const socket = new WebSocket('wss://2f80-207-251-80-10.ngrok-free.app/swarm/ws/1');
+        // random integer between 0 and 100
+        function getRandomInt() {
+            return Math.floor(Math.random() * 101);
+        }
+        const socket = new WebSocket(`wss://2f80-207-251-80-10.ngrok-free.app/swarm/ws/${getRandomInt()}`);
 
         socket.addEventListener('message', function(event) {
             const data = event.data;
