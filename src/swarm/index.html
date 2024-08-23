@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Connection</title>
+</head>
+<body>
+    <h1>WebSocket Data</h1>
+    <script>
+        const socket = new WebSocket('ws://localhost:8000/swarm/ws/1');
+
+        socket.addEventListener('message', function(event) {
+            const data = event.data;
+            const p = document.createElement('p');
+            p.textContent = data;
+            document.body.appendChild(p);
+        });
+
+        socket.addEventListener('open', function() {
+            console.log('WebSocket connection established');
+        });
+
+        socket.addEventListener('close', function() {
+            console.log('WebSocket connection closed');
+        });
+
+        socket.addEventListener('error', function(error) {
+            console.error('WebSocket error:', error);
+        });
+    </script>
+</body>
+</html>

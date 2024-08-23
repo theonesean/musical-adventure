@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard Event Listener</title>
+</head>
+<body>
+    <h1>Press any key</h1>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            const character = event.key;
+            const data = { text: character };
+
+            fetch('http://localhost:8000/conductor/receive', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
