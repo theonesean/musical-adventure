@@ -12,10 +12,11 @@
             const character = event.key;
             const data = { text: character };
 
-            fetch('http://localhost:8000/conductor/receive', {
+            fetch('https://2f80-207-251-80-10.ngrok-free.app/conductor/receive', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': '69420'
                 },
                 body: JSON.stringify(data)
             })
