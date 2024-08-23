@@ -36,7 +36,8 @@
         });
 
         socket.addEventListener('error', function(error) {
-            document.getElementById('data').textContent += 'WebSocket error: ' + error.message;
+            document.getElementById('data').textContent += 'WebSocket error: ' + error;
+            
             console.error('WebSocket error:', error);
         });
     </script>
