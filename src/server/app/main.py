@@ -63,7 +63,7 @@ async def root():
 def parse_note(note: str):
     # 1/C4
     note = note.split("/")
-    return note[0], note[1]
+    return int(note[0]), note[1]
 
 @app.post("/conductor/receive")
 async def receive(note: Note):
