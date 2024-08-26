@@ -8,9 +8,45 @@
 <body>
     <h1>Press any key</h1>
     <script>
+        // char to note
+        // QWERTYUIOP - C4 major scale, row 1
+        // ASDFGHJKL - C4 major scale, row 2
+        function charToNote(char) {
+            const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+            const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+
+            const note = {
+                'Q': 'C4',
+                'W': 'D4',
+                'E': 'E4',
+                'R': 'F4',
+                'T': 'G4',
+                'Y': 'A4',
+                'U': 'B4',
+                'I': 'C5',
+                'O': 'D5',
+                'P': 'E5',
+                'A': 'C4',
+                'S': 'D4',
+                'D': 'E4',
+                'F': 'F4',
+                'G': 'G4',
+                'H': 'A4',
+                'J': 'B4',
+                'K': 'C5',
+                'L': 'D5'
+            };
+
+            if (row1.includes(char)) {
+                return '1/' + note[char];
+            } else if (row2.includes(char)) {
+                return '2/' + note[char];
+            }
+        }
+
         document.addEventListener('keydown', function(event) {
-            const character = event.key;
-            const data = { text: character };
+            const character = event.key.toUpperCase();
+            const data = { text: charToNote(character) || 'Invalid key' };
 
             fetch('https://goldfish-app-92sco.ondigitalocean.app/conductor/receive', {
                 method: 'POST',

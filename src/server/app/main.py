@@ -43,6 +43,16 @@ class ConnectionManager:
         for connection in self.active_connections:
             await connection.send_text(message)
 
+    async def broadcast_even(self, message: str):
+        for connection in self.active_connections:
+            if connection.client_id % 2 == 0:
+                await connection.send_text(message)
+     
+    async def broadcast_odd(self, message: str):
+        for connection in self.active_connections:
+            if connection.client_id % 2 != 0:
+                await connection.send_text(message)
+
 manager = ConnectionManager()
 
 
@@ -50,10 +60,19 @@ manager = ConnectionManager()
 async def root():
     return {"message": "Hello World"}
 
+def parse_note(note: str):
+    # 1/C4
+    note = note.split("/")
+    return note[0], note[1]
+
 @app.post("/conductor/receive")
 async def receive(note: Note):
-    await manager.broadcast(note.text)
-    return {"note": note.text}
+    n = parse_note(note.text)
+    if n[0] % 2 == 0:
+        await manager.broadcast_even(note.text)
+    elif n[0] % 2 != 0:
+        await manager.broadcast_odd(note.text)
+    return {"note": n[1], "row": n[0]}
 
 @app.websocket("/swarm/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
