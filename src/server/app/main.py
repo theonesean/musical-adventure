@@ -25,33 +25,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class Client(WebSocket):
+    id: int
+    socket: WebSocket
+
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: list[WebSocket] = []
+        self.active_connections: list[Client] = []
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket, client_id: int):
         await websocket.accept()
-        self.active_connections.append(websocket)
+        self.active_connections.append(Client(id=client_id, socket=websocket))
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
+    def disconnect(self, websocket: WebSocket, client_id: int):
+        self.active_connections.remove(Client(id=client_id, socket=websocket))
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
+    async def send_personal_message(self, message: str, client_id: int):
+        client = next((c for c in self.active_connections if c.id == client_id), None)
+        if client:
+            await client.socket.send_text(message)
 
     async def broadcast(self, message: str):
         for connection in self.active_connections:
-            await connection.send_text(message)
+            await connection.socket.send_text(message)
 
     async def broadcast_even(self, message: str):
         for connection in self.active_connections:
-            if connection.client_id % 2 == 0:
-                await connection.send_text(message)
+            if connection.id % 2 == 0:
+                await connection.socket.send_text(message)
      
     async def broadcast_odd(self, message: str):
         for connection in self.active_connections:
-            if connection.client_id % 2 != 0:
-                await connection.send_text(message)
+            if connection.id % 2 != 0:
+                await connection.socket.send_text(message)
 
 manager = ConnectionManager()
 
@@ -76,12 +82,12 @@ async def receive(note: Note):
 
 @app.websocket("/swarm/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    await manager.connect(websocket)
+    await manager.connect(websocket, client_id)
     try:
         while True:
             data = await websocket.receive_text()
             await manager.send_personal_message(f"You wrote: {data}", websocket)
             await manager.broadcast(f"Client #{client_id} says: {data}")
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        manager.disconnect(websocket, client_id)
         await manager.broadcast(f"Client #{client_id} left the chat")
