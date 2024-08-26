@@ -71,6 +71,8 @@ async def root():
     return {"message": "Hello World"}
 
 def parse_note(note: str):
+    if note == "Invalid key":
+        return 0, "Invalid key"
     # 1/C4
     note = note.split("/")
     return int(note[0]), note[1]
