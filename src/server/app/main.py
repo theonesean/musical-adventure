@@ -25,7 +25,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Client(BaseModel):
+
+class Client():
     id: int
     socket: WebSocket
 
