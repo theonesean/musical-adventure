@@ -50,6 +50,10 @@
             return 12 + 12 * octave + note;
         }
 
+        function playNote(n) {
+            playTone(decodeASPN(n));
+        }
+
         // function testPrint() {
         //     console.log(decodeASPN('C4'));
         //     console.log(decodeASPN('D4'));
@@ -113,7 +117,7 @@
         socket.addEventListener('message', function(event) {
             const data = event.data;
 
-            decodeASPN(data);
+            playNote(data);
 
             const dataElement = document.getElementById('data');
             dataElement.textContent += data;
