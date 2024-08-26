@@ -98,3 +98,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     except WebSocketDisconnect:
         manager.disconnect(client)
         await manager.broadcast(f"Client #{client_id} left the chat")
+
+@app.get("/conductor/nodes")
+def get_nodes():
+    return {"nodes": len(manager.active_connections)}
