@@ -25,7 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Client(WebSocket):
+class Client(BaseModel):
     id: int
     socket: WebSocket
 
@@ -33,12 +33,12 @@ class ConnectionManager:
     def __init__(self):
         self.active_connections: list[Client] = []
 
-    async def connect(self, websocket: WebSocket, client_id: int):
-        await websocket.accept()
-        self.active_connections.append(Client(id=client_id, socket=websocket))
+    async def connect(self, client: Client):
+        await client.socket.accept()
+        self.active_connections.append(client)
 
-    def disconnect(self, websocket: WebSocket, client_id: int):
-        self.active_connections.remove(Client(id=client_id, socket=websocket))
+    def disconnect(self, client: Client):
+        self.active_connections.remove(client)
 
     async def send_personal_message(self, message: str, client_id: int):
         client = next((c for c in self.active_connections if c.id == client_id), None)
@@ -82,7 +82,8 @@ async def receive(note: Note):
 
 @app.websocket("/swarm/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    await manager.connect(websocket, client_id)
+    client = Client(id=client_id, socket=websocket)
+    await manager.connect(client)
     try:
         while True:
             data = await websocket.receive_text()
