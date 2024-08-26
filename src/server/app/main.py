@@ -81,9 +81,9 @@ def parse_note(note: str):
 async def receive(note: Note):
     n = parse_note(note.text)
     if n[0] % 2 == 0:
-        await manager.broadcast_even(note.text)
+        await manager.broadcast_even(n[1])
     elif n[0] % 2 != 0:
-        await manager.broadcast_odd(note.text)
+        await manager.broadcast_odd(n[1])
     return {"note": n[1], "row": n[0]}
 
 @app.websocket("/swarm/ws/{client_id}")
