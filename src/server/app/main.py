@@ -99,6 +99,10 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         manager.disconnect(client)
         await manager.broadcast(f"Client #{client_id} left the chat")
 
-@app.get("/conductor/nodes")
+@app.get("/conductor/swarm/size")
 def get_nodes():
     return {"nodes": len(manager.active_connections)}
+
+@app.get("/conductor/swarm/nodes")
+def get_clients():
+    return {"clients": [c.id for c in manager.active_connections]}
