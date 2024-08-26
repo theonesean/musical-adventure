@@ -26,9 +26,12 @@ app.add_middleware(
 )
 
 
-class Client():
+class Client(BaseModel):
     id: int
     socket: WebSocket
+
+    class Config:
+        arbitrary_types_allowed = True
 
 class ConnectionManager:
     def __init__(self):
