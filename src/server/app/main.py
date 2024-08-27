@@ -86,6 +86,12 @@ async def receive(note: Note):
         await manager.broadcast_odd(n[1])
     return {"note": n[1], "row": n[0]}
 
+@app.get("/conductor/play")
+async def play():
+    """Play simple scale"""
+    await manager.broadcast("play")
+    return {"message": "Playing scale"}
+
 @app.get("/conductor/play/air")
 async def play_air():
     """Play 'Air on the G String'"""
