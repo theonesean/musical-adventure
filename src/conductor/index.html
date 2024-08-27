@@ -72,7 +72,7 @@
         });
 
         document.querySelector('.play-air').addEventListener('click', function() {
-            fetch('https://goldfish-app-92sco.ondigitalocean.app/conductor/play-air')
+            fetch('https://goldfish-app-92sco.ondigitalocean.app/conductor/play/air')
             .then(response => response.json())
             .then(data => console.log('Success:', data))
             .catch((error) => console.error('Error:', error));
