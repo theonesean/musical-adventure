@@ -86,6 +86,16 @@ async def receive(note: Note):
         await manager.broadcast_odd(n[1])
     return {"note": n[1], "row": n[0]}
 
+@app.get("/conductor/play/air")
+async def play_air():
+    """Play 'Air on the G String'"""
+    return {"message": "Playing air"}
+
+@app.get("/conductor/stop")
+async def stop():
+    """Stop the music"""
+    return {"message": "Stopping music"}
+
 @app.websocket("/swarm/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     client = Client(id=client_id, socket=websocket)

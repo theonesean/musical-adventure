@@ -6,7 +6,18 @@
     <title>Keyboard Event Listener</title>
 </head>
 <body>
-    <h1>Press any key</h1>
+    <h1>Press any key to play a note</h1>
+    <div>
+        <p>QWERTYUIOP - C4 major scale, row 1</p>
+        <p>ASDFGHJKL - C4 major scale, row 2</p>
+    </div>
+    <div>
+        <button class="play-air">Play 'Air on the G String'</button>
+        <button class="stop">Stop Music</button>
+    </div>
+    <div>
+        <span class="nodes">0</span> nodes connected
+    </div>
     <script>
         // char to note
         // QWERTYUIOP - C4 major scale, row 1
@@ -59,6 +70,34 @@
             .then(data => console.log('Success:', data))
             .catch((error) => console.error('Error:', error));
         });
+
+        document.querySelector('.play-air').addEventListener('click', function() {
+            fetch('https://goldfish-app-92sco.ondigitalocean.app/conductor/play-air')
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+        });
+
+        document.querySelector('.stop').addEventListener('click', function() {
+            fetch('https://goldfish-app-92sco.ondigitalocean.app/conductor/stop')
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+        });
+
+        // LOOK INTO SSE
+        // const eventSource = new EventSource('https://goldfish-app-92sco.ondigitalocean.app/conductor/connect');
+        // eventSource.onmessage = function(event) {
+        //     document.querySelector('.nodes').textContent = event.data;
+        // };
+
+        // poll every 5 seconds
+        setInterval(function() {
+            fetch('https://goldfish-app-92sco.ondigitalocean.app/conductor/swarm/size')
+            .then(response => response.json())
+            .then(data => document.querySelector('.nodes').textContent = data.nodes)
+            .catch((error) => console.error('Error:', error));
+        }, 5000);
     </script>
 </body>
 </html>
