@@ -117,6 +117,16 @@
         socket.addEventListener('message', function(event) {
             const data = event.data;
 
+            if (data == 'play') {
+                play();
+                return;
+            }
+
+            if (data == 'stop') {
+                player.cancelQueue(audioContext);
+                return;
+            }
+
             playNote(data);
 
             const dataElement = document.getElementById('data');

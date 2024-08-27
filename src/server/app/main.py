@@ -94,6 +94,7 @@ async def play_air():
 @app.get("/conductor/stop")
 async def stop():
     """Stop the music"""
+    await manager.broadcast("stop")
     return {"message": "Stopping music"}
 
 @app.websocket("/swarm/ws/{client_id}")
